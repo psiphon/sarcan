@@ -37,7 +37,10 @@ class TextEndpoint(BaseEndpoint):
             # Log response
             self.config.get_logger().log_response(answer)
 
-            return {"response": answer}
+            # Generate audio file from personality
+            audio = self.config.get_personality().text_to_voice(answer)
+
+            return {"message": answer, "audio": audio}
         except Exception as e:
             print(f"Error processing text input: {str(e)}")
             return self._return_error(accept_header)
@@ -49,5 +52,4 @@ class TextEndpoint(BaseEndpoint):
                 error_wav = f.read()
             return error_wav, 500  # HTTP status code 500 for internal server error
         else:
-            # Return error text
-            return {"error": "Internal server error"}, 500
+            return self.config.personality.get_error_message(), 500

@@ -8,12 +8,15 @@ from logger import Logger
 # init logger
 logger = Logger("SARCAN")
 
-glados = Glados()
-
 # Initialize config
 config = Config()
-config.set_personality(glados)
 config.set_logger(logger)
+
+if config.get_personality_name() == "glados":
+    glados = Glados(config)
+    config.set_personality(glados)
+else:
+    raise Exception("Invalid personality")
 
 app = Flask(__name__)
 

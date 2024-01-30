@@ -2,7 +2,6 @@ from openai import OpenAI
 from config import Config
 import subprocess
 
-client = OpenAI(api_key='s...kLT')
 import requests
 import urllib.parse
 
@@ -10,12 +9,14 @@ import urllib.parse
 class ChatGPT:
     def __init__(self, config):
         self.config = config
+        self.client = OpenAI(api_key=config.get_openai_key())
 
     def process(self, question):
         # Call the OpenAI API to get the answer
-        response = client.chat.completions.create(model="gpt-3.5-turbo", 
+        response = self.client.chat.completions.create(model="gpt-3.5-turbo", 
                     messages=[
                         {"role":"user","content":self.config.get_personality().get_chatgpt_instruction()},
+                        {"role":"user","content":"try to keep responses below the character count " + str(self.config.get_max_request_length())},
                         {"role":"user","content":question.strip()}
                     ],
                     max_tokens=100)

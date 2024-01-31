@@ -1,4 +1,7 @@
 __pycache__
-config/
+config/config.json
 config.json
 tmp/
+build/
+
+

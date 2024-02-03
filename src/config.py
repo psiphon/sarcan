@@ -9,8 +9,13 @@ class Config:
         self.tmp_dir = "/tmp"
         self.glados_server = "http://localhost:8124"
         self.max_request_length = 300
-        self.openai_key = "sk-"
+        self.openai_key = None
         self.read_config(self.find_config_file())
+        self.read_config_from_env()
+        if self.openai_key is None:
+            raise Exception("OpenAI key not found. Please set OPENAI_KEY environment variable or add to config.json file")
+        if self.personality_name is None:
+            raise Exception("Personality not found. Please set PERSONALITY environment variable or add to config.json file")
 
     def read_config(self, config_file):
         with open(config_file) as f:
@@ -26,8 +31,6 @@ class Config:
             # ensure a valid URL is provided
             if not config["gladosServerUrl"].startswith("http"):
                 raise Exception("Invalid gladosServerUrl")
-        if "openAiKey" not in config:
-            raise Exception("Invalid openAiKey")
         return True
 
     def _set_config(self, config):
@@ -46,13 +49,25 @@ class Config:
         config_file = "config.json"
         if os.path.exists(config_file):
             return config_file
-        config_file = os.path.join(os.path.dirname(__file__), "config", "config.json")
+        config_file = os.path.join(os.path.dirname(__file__), "..", "config", "config.json")
         if os.path.exists(config_file):
             return config_file
         config_file = os.path.join(os.path.dirname(__file__), "..", "config.json")
         if os.path.exists(config_file):
             return config_file
         raise Exception("Could not find config.json file")
+    
+    def read_config_from_env(self):
+        if "SARCAN_PERSONALITY" in os.environ:
+            self.personality_name = os.environ["SARCAN_PERSONALITY"]
+        if "SARCAN_TMP_DIR" in os.environ:
+            self.tmp_dir = os.environ["SARCAN_TMP_DIR"]
+        if "SARCAN_GLADOS_SERVER_URL" in os.environ:
+            self.glados_server = os.environ["SARCAN_GLADOS_SERVER_URL"]
+        if "SARCAN_MAX_REQUEST_LENGTH" in os.environ:
+            self.max_request_length = os.environ["SARCAN_MAX_REQUEST_LENGTH"]
+        if "SARCAN_OPENAI_KEY" in os.environ:
+            self.openai_key = os.environ["SARCAN_OPENAI_KEY"]
 
     def set_personality(self, personality):
         self.personality = personality

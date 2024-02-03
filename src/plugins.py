@@ -2,7 +2,8 @@ import os
 import importlib.util
 
 class PluginManager:
-    def __init__(self):
+    def __init__(self, config):
+        self.config = config
         self.plugins = self.load_plugins()
 
     def load_plugins(self):
@@ -10,11 +11,13 @@ class PluginManager:
         plugins = []
         plugins_dir = os.path.join(os.path.dirname(__file__), "plugins")
         for filename in os.listdir(plugins_dir):
+            self.config.logger.debug(f"Loading plugin: {filename}")
             if filename.endswith(".py") and filename != "__init__.py":
                 module_name = os.path.splitext(filename)[0]
                 spec = importlib.util.spec_from_file_location(module_name, os.path.join(plugins_dir, filename))
                 module = importlib.util.module_from_spec(spec)
                 spec.loader.exec_module(module)
                 plugins.append(module)
+                self.config.logger.debug(f"Loaded plugin: {module_name}")
         return plugins
 

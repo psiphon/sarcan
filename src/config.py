@@ -10,6 +10,8 @@ class Config:
         self.glados_server = "http://localhost:8124"
         self.max_request_length = 300
         self.openai_key = None
+        self.homeassistant_url = "http://localhost:8123"
+        self.homeassistant_token = None
         self.read_config(self.find_config_file())
         self.read_config_from_env()
         if self.openai_key is None:
@@ -44,6 +46,10 @@ class Config:
             self.max_request_length = config["maxRequestLength"]
         if "openAiKey" in config:
             self.openai_key = config["openAiKey"]
+        if "homeassistantUrl" in config:
+            self.homeassistant_url = config["homeassistantUrl"]
+        if "homeassistantToken" in config:
+            self.homeassistant_token = config["homeassistantToken"]
 
     def find_config_file(self):
         config_file = "config.json"
@@ -68,6 +74,10 @@ class Config:
             self.max_request_length = os.environ["SARCAN_MAX_REQUEST_LENGTH"]
         if "SARCAN_OPENAI_KEY" in os.environ:
             self.openai_key = os.environ["SARCAN_OPENAI_KEY"]
+        if "SARCAN_HOMEASSISTANT_URL" in os.environ:
+            self.homeassistant_url = os.environ["SARCAN_HOMEASSISTANT_URL"]
+        if "SARCAN_HOMEASSISTANT_TOKEN" in os.environ:
+            self.homeassistant_token = os.environ["SARCAN_HOMEASSISTANT_TOKEN"]
 
     def set_personality(self, personality):
         self.personality = personality
@@ -95,4 +105,10 @@ class Config:
     
     def get_openai_key(self):
         return self.openai_key
+
+    def get_homeassistant_url(self):
+        return self.homeassistant_url
+    
+    def get_homeassistant_token(self):
+        return self.homeassistant_token
         

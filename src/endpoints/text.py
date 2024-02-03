@@ -5,6 +5,7 @@ from config import Config
 class TextEndpoint(BaseEndpoint):
     def __init__(self, config):
         super().__init__(config)
+        self.processor = TextProcessor(config)
 
     def process_request(self, request):
         try:
@@ -13,11 +14,7 @@ class TextEndpoint(BaseEndpoint):
             # error check
             if request.get_data() is None:
                 return self._return_error(accept_header)
-            
-            # ensure request is text
-            # if "text/plain" not in request.headers["Content-Type"]:
-            #     return self._return_error(accept_header)
-            
+
             # ensure request is not empty
             if len(request.get_data()) < 5:
                 return self._return_error(accept_header)
@@ -32,7 +29,7 @@ class TextEndpoint(BaseEndpoint):
             self.config.get_logger().info(input_text)
 
             # Process text input
-            answer = TextProcessor(self.config).process(input_text)
+            answer = self.processor.process(input_text)
 
             # Log response
             self.config.get_logger().log_response(answer)

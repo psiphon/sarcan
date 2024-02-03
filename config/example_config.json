@@ -3,5 +3,7 @@
     "tmpDir": "/tmp",
     "gladosServerUrl": "http://localhost:8124",
     "maxRequestLength": 256,
-    "openAiKey": "OPENAI_KEY"
+    "openAiKey": "OPENAI_KEY",
+    "homeassistantUrl": "http://localhost:8123",
+    "homeassistantToken": "HOME_ASSISTANT_TOKEN"
 }

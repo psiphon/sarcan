@@ -4,6 +4,7 @@ from endpoints.text import TextEndpoint
 from personalities.glados import Glados
 from config import Config
 from logger import Logger
+from threading import Thread
 
 # init logger
 logger = Logger("SARCAN")
@@ -22,6 +23,9 @@ else:
 app = Flask(__name__)
 app.static_folder = 'static'
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
+
+# remove files older than 1 hour from config.get_tmp_dir() every 5 minutes
+config.clean_tmp_dir()
 
 # Initialize endpoint instances
 text_endpoint = TextEndpoint(config)
@@ -44,3 +48,4 @@ def send_wav(path):
 
 if __name__ == '__main__':
     app.run(debug=True,host="0.0.0.0",port=5000)
+

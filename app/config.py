@@ -1,5 +1,6 @@
 import os
 import json
+import time
 
 class Config:
     def __init__(self):
@@ -118,4 +119,16 @@ class Config:
     
     def get_homeassistant_token(self):
         return self.homeassistant_token
-        
+    
+    def clean_tmp_dir(self):
+        # remove files older than 1 hour from config.get_tmp_dir()
+        path = os.path.join('app',self.get_audio_dir())
+        for f in os.listdir(path):
+            file_path = os.path.join(path, f)
+            
+            if not file_path.endswith(".wav"):
+                continue
+
+            print(f"Checking file {file_path}")
+            if os.stat(file_path).st_mtime < time.time() - 3600:
+                os.remove(file_path)

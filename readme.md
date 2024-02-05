@@ -35,6 +35,8 @@ Follow these steps to set up SARCAN on your system:
     Create a `tmp` folder in the SARCAN directory. This folder will be used for storing temporary files generated during the TTS synthesis process.
 
 4. **Install Dependencies**
+    Install espeak on your system using your package manager such as brew,yum,apt
+
     Install the required Python dependencies by running:
     ```bash
     pip install -r requirements.txt

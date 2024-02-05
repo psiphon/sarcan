@@ -1,7 +1,8 @@
 __pycache__
 config/config.json
 config.json
+.env
 tmp/
 build/
-
+app/static/audio/*.wav
 

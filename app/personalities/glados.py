@@ -48,6 +48,14 @@ class Glados:
     def text_to_voice(self, text):
         # Tokenize, clean and phonemize input text
         x = prepare_text(text).to('cpu')
+    
+        md5 = self.calculate_md5(text)
+        filename = f"{md5}.wav"
+        tmpfile = os.path.join('app',self.config.get_audio_dir(), filename)
+
+        # Check if file already exists
+        if os.path.isfile(tmpfile):
+            return '/audio/'+filename
 
         with torch.no_grad():
 
@@ -66,10 +74,6 @@ class Glados:
             audio = audio.squeeze()
             audio = audio * 32768.0
             audio = audio.cpu().numpy().astype('int16')
-        
-            md5 = self.calculate_md5(text)
-            filename = f"{md5}.wav"
-            tmpfile = os.path.join('app',self.config.get_audio_dir(), filename)
 
             # Write audio file to disk
             # 22,05 kHz sample rate

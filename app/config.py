@@ -7,6 +7,7 @@ class Config:
         self.personality_name = "glados"
         self.logger = None
         self.tmp_dir = "/tmp"
+        self.audio_dir = "static/audio"
         self.glados_server = "http://localhost:8124"
         self.max_request_length = 300
         self.openai_key = None
@@ -90,6 +91,12 @@ class Config:
     
     def get_tmp_dir(self):
         return self.tmp_dir
+    
+    def set_audio_dir(self, audio_dir):
+        self.audio_dir = audio_dir
+    
+    def get_audio_dir(self):
+        return self.audio_dir
     
     def get_glados_server(self):
         return self.glados_server

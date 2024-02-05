@@ -1,7 +1,7 @@
 import requests
 import re
 import json
-
+import random
 
 hag_pattern = r'(?:tell |ask )?google (?:to )?'
 class Plugin():
@@ -47,7 +47,15 @@ class Plugin():
                 # this typically happens when google responds with HTML sinces 
                 # home assistant plugins are not allowed to parse HTML
                 if json_response == []:
-                    return "Command was successfully sent to Google."
+                    # send a random response back
+                    successes = [
+                        "Well, look at me, I've successfully sent a command to Google. I should probably give myself a pat on the back for such a monumental accomplishment.",
+                        "I've done it! I've successfully sent a command to Google. I'm so proud of myself.",
+                        "Oh, look at me, I successfully sent a command to Google. Aren't I just the pinnacle of human accomplishment? I should probably start planning my Nobel Prize acceptance speech.",
+                        "Oh, look at me, I successfully sent a command to Google. I should probably reward myself for such an extraordinary feat of clicking buttons."
+                    ]
+
+                    return random.choice(successes)
                 else :
                     # get the text from the json response
                     return json_response[0]["text"]

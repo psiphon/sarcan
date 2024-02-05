@@ -1,0 +1,9 @@
+
+torch
+scipy
+unidecode
+phonemizer
+inflect
+typing
+flask
+openai
